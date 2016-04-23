@@ -1,0 +1,123 @@
+$fa-font-path: "/assets" !default;
+$grid-float-breakpoint: 100px;
+@import "../../bower_components/font-awesome/scss/font-awesome.scss";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap";
+
+html {
+    min-width: 320px;
+}
+
+.main {
+    padding-top: ceil($grid-gutter-width / 2);
+    &.padding-fixed-navbar {
+        padding-top: $navbar-height + ceil($grid-gutter-width / 2);
+    }
+    &.popup {
+        max-width: 337px;
+    }
+}
+
+.navbar {
+    $margin: 5px;
+    .container-fluid {
+        padding-left: $margin;
+        padding-right: $margin;
+    }
+    .navbar-search {
+        position: absolute;
+        .form-group,
+        .form-group .form-control {
+            width: 100%;
+        }
+    }
+    $navbar-button-width: 44px + ($margin * 2);
+    @for $i from 1 through 4 {
+        .navbar-search:nth-child(#{$i}) {
+            left: #{(($i - 1) * $navbar-button-width) + $margin};
+        }
+        .navbar-search:nth-last-child(#{$i}) {
+            right: #{(($i - 1) * $navbar-button-width) + $margin};
+        }
+    }
+    .navbar-form {
+        padding: 0 $margin;
+        .form-group {
+            margin-bottom: 0;
+        }
+    }
+    .navbar-right {
+        margin-right: 0;
+    }
+}
+
+h3, h4, h5, h6 {
+    margin-top: 0;
+}
+
+button.text-center,
+.text-center button {
+    text-align: center;
+}
+
+.text-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.radio, .checkbox {
+    margin-top: inherit;
+}
+
+input[type="search"] {
+    -webkit-appearance: searchfield !important;
+    &::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button !important;
+        cursor: pointer;
+    }
+}
+
+a {
+    cursor: pointer;
+}
+
+// DEPRECATED (I think)
+// .fa-stack.fa-stack-1em {
+//     &.fa-fw {
+//         width: (18em / 14);
+//         text-align: center;
+//     }
+//     width: 1em;
+//     height: 1em;
+//     line-height: 1em;
+//     .fa-stack-2x {
+//         font-size: 1em;
+//     }
+//     .fa-stack-1x {
+//         font-size: .5em;
+//     }
+// }
+
+.no-padding {
+    & {
+        margin: 0;
+        padding: 0;
+    }
+    &-left {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    &-right {
+        margin-right: 0;
+        padding-right: 0;
+    }
+}
+
+.dotted {
+    border: 1px dotted #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    .panel-body {
+        padding-bottom: 0;
+    }
+}

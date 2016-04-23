@@ -1,0 +1,48 @@
+<div class="list-group text-center">
+  <h4>
+    {{model.service}}
+  </h4>
+
+  {{#if model.url}}
+    <a target="_blank" href="{{model.url}}" title="{{model.url}}" class="list-group-item btn btn-default btn-block">
+      {{img-favicon enableFavIconFetcher=storage.enableFavIconFetcher url=model.url}} Go to the website
+    </a>
+  {{/if}}
+
+  <div class="input-group btn-block">
+    <span class="input-group-addon">
+      <i class="fa fa-fw fa-user"></i>
+    </span>
+    <input type="text" class="form-control" readonly="true" value="{{model.account}}">
+    <span class="input-group-btn">
+      <button {{action 'copyToClipboard' model.account}} title="Copy the username to the clipboard" class="btn btn-default">
+        <i class="fa fa-fw fa-clipboard"></i>
+      </button>
+    </span>
+  </div>
+
+  <div class="input-group btn-block">
+    <span class="input-group-addon">
+      <i class="fa fa-fw fa-key"></i>
+    </span>
+    <input type="{{if showPassword 'text' 'password'}}" class="form-control" readonly="true" value="{{model.decryptedSecret}}">
+    <span class="input-group-btn">
+      <button class="btn btn-default" {{action 'toggleShowPassword'}} title="{{if showPassword 'Mask the password' 'Unmask the password'}}">
+        <i class="fa fa-fw {{if showPassword 'fa-eye-slash' 'fa-eye'}}"></i>
+      </button>
+      <button {{action 'copyToClipboard' model.decryptedSecret}} title="Copy the password to the clipboard" class="btn btn-default">
+        <i class="fa fa-fw fa-clipboard"></i>
+      </button>
+    </span>
+  </div>
+
+  {{#if model.url}}
+    <button {{action 'copyToClipboard' model.url}} title="Copy the url to the clipboard" class="list-group-item btn btn-default btn-block">
+      <i class="fa fa-fw fa-globe"></i> Copy url
+    </button>
+  {{/if}}
+
+  {{#link-to 'authenticated.passwords.show.edit' model class="list-group-item btn btn-default btn-block" }}
+    <i class="fa fa-fw fa-pencil"></i> Edit secret
+  {{/link-to}}
+</div>

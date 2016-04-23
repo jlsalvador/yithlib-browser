@@ -1,0 +1,53 @@
+{{#if isHeaderVisible}}
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      {{#unless isGoBackHidden}}
+        <div class="navbar-form navbar-left">
+          <button type="button" {{action "goBack"}} title="Go Back" class="btn btn-default">
+            <i class="fa fa-fw fa-chevron-left"></i>
+          </button>
+        </div>
+      {{/unless}}
+      {{#if isMasterPasswordValid}}
+        <div class="navbar-form navbar-left navbar-search">
+          <div class="form-group">
+            {{input-autofocused class="searchfield form-control" autocomplete="off" type="search" placeholder="Search in your library" value=authenticated.filterText}}
+          </div>
+        </div>
+      {{/if}}
+      <div class="navbar-form navbar-right">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Open Menu">
+          <i class="fa fa-fw fa-bars"></i>
+        </button>
+        <ul class="dropdown-menu">
+          {{#if isMasterPasswordValid}}
+            <li>
+              {{#link-to "authenticated.passwords.new" title="Add new secret"}}
+                <i class="fa fa-fw fa-plus"></i> Add new secret
+              {{/link-to}}
+            </li>
+          {{/if}}
+          {{#if isMasterPasswordValid}}
+            {{#if isWindowPopup}}
+              <li class="divider"></li>
+            {{/if}}
+          {{/if}}
+          {{#if isWindowPopup}}
+            <li>
+              <a {{action "openLikePopup"}} title="Open in Popup">
+                <i class="fa fa-fw fa-external-link"></i> Open in Popup
+              </a>
+            </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </nav>
+{{/if}}
+<div class="main container{{if isHeaderVisible ' padding-fixed-navbar'}}{{if isWindowPopup ' popup'}}">
+  <div class="row">
+    <div class="col-xs-12">
+      {{outlet}}
+    </div>
+  </div>
+</div>

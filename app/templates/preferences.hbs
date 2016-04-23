@@ -1,0 +1,130 @@
+<form>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Account
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item form-group">
+                <label for="serverUrl">
+                    Server URL:
+                </label>
+                {{input id="serverUrl" name="serverUrl" list="serversList" class="form-control" type="url" value=storage.serverUrl placeholder="Server URL" required="required"}}
+                <datalist id="serversList">
+                  <option value="https://www.yithlibrary.com"/>
+                </datalist>
+                <p class="help-block">
+                    URL to your Yith Library provider.
+                </p>
+            </li>
+            <li class="list-group-item">
+                <label for="masterPassword">
+                    Where to remember the Master Password:
+                </label>
+                <select class="form-control" onchange={{action "selectWhereToRememberMasterPassword" value="target.value"}}>
+                    <option value="memory" selected="{{if isOptionMemorySelected 'selected' ''}}">Don't remember</option>
+                    <option value="session" selected="{{if isOptionSessionSelected 'selected' ''}}">Remember for this session</option>
+                    <option value="local" selected="{{if isOptionLocalSelected 'selected' ''}}">Always remember</option>
+                </select>
+                <p class="help-block">
+                    Choose wisely, this can be a security hole if someone can access to your computer.
+                </p>
+            </li>
+            <li class="list-group-item checkbox">
+                <label>
+                    {{input type="checkbox" checked=storage.rememberEncryptedPasswords}}
+                    Save encrypted passwords locally.
+                </label>
+                <p class="help-block">
+                    A local copy from the server will be saved for offline access.
+                </p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Application behavior
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item checkbox">
+                <label>
+                    {{input type="checkbox" checked=storage.allowContextMenus}}
+                    Show context menu item on right click.
+                </label>
+                <p class="help-block">
+                    Right click in an input to fill or anywhere to add the page to Yith Library.
+                </p>
+            </li>
+            <li class="list-group-item">
+                <label>
+                    Extension icon.
+                </label>
+                <select class="form-control" onchange={{action "selectExtensionIcon" value="target.value"}}>
+                    <option value="dark" selected="{{if isOptionDarkSelected 'selected'}}">
+                        Dark
+                    </option>
+                    <option value="bright" selected="{{if isOptionBrightSelected 'selected'}}">
+                        Bright
+                    </option>
+                </select>
+                <p class="help-block">
+                    YithLib will uses like favicon the white variant.
+                </p>
+            </li>
+            <li class="list-group-item checkbox">
+                <label>
+                    {{input type="checkbox" checked=storage.alwaysOpenLikePopup}}
+                    Always open in window popup.
+                </label>
+                <p class="help-block">
+                    YithLib will opens in a window popup instead the window extension.
+                </p>
+            </li>
+            <li class="list-group-item checkbox">
+                <label>
+                    {{input type="checkbox" checked=storage.enableFavIconFetcher}}
+                    Fetch website icons.
+                </label>
+                <p class="help-block">
+                    YithLib will uses Google Api to fetch the website favicon.
+                </p>
+            </li>
+            <li class="list-group-item form-group">
+                <label for="numberOfPagedPasswords">
+                    Number of passwords to show initially:
+                </label>
+                {{input id="numberOfPagedPasswords" class="form-control" type="number" min="10" value=storage.numberOfPagedPasswords}}
+                <p class="help-block">
+                    Set how many passwords will be show the first time you go to your Library.
+                </p>
+            </li>
+            <li class="list-group-item form-group">
+                <label for="millisecondsBetweenPollingForUpdates">
+                    Milliseconds for polling for updates:
+                </label>
+                {{input id="millisecondsBetweenPollingForUpdates" class="form-control" type="number" min="60000" step="60000" value=storage.millisecondsBetweenPollingForUpdates}}
+                <p class="help-block">
+                    Control when YithLib will refresh your passwords from the server.
+                </p>
+            </li>
+            <li class="list-group-item form-group">
+                <label for="millisecondsBetweenKeyUpAndFilter">
+                    Milliseconds to wait between writing and search:
+                </label>
+                {{input id="millisecondsBetweenKeyUpAndFilter" class="form-control" type="number" min="100" max="3000" step="100" value=storage.millisecondsBetweenKeyUpAndFilter}}
+                <p class="help-block">
+                    Milliseconds to wait between writing and search for the top SearchBox.
+                </p>
+            </li>
+            <li class="list-group-item form-group">
+                <label for="millisecondsToDeleteMasterPasswordFromMemory">
+                    Milliseconds to remove Master Password from memory:
+                </label>
+                {{input id="millisecondsToDeleteMasterPasswordFromMemory" class="form-control" type="number" min="500" step="500" value=storage.millisecondsToDeleteMasterPasswordFromMemory}}
+                <p class="help-block">
+                    When you are selecting to remember the Master Password into memory, will be removed from memory when it reaches the time limit.
+                </p>
+            </li>
+        </ul>
+    </div>
+</form>

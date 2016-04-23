@@ -1,0 +1,175 @@
+<form class="form-horizontal">
+  <div class="form-group">
+    <label for="service" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-book"></i> Title
+    </label>
+    <div class="col-sm-10">
+      {{input value=model.service id="service" class="form-control" placeholder="Service"}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="account" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-user"></i> Account
+    </label>
+    <div class="col-sm-10">
+      {{input value=model.account id="account" class="form-control" placeholder="Account"}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="secret" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-lock"></i> Secret
+    </label>
+    <div class="col-sm-10">
+      <button type="button" class="btn btn-default btn-block" data-toggle="collapse" data-target=".secret">
+        <i class="fa fa-unlock"></i> Show secret
+      </button>
+      {{textarea value=model.decryptedSecret id="secret" rows="5" class="form-control collapse secret" placeholder="Secret"}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="expiration" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-calendar-times-o"></i> Expiration
+    </label>
+    <div class="col-sm-10">
+      {{input type="number" value=model.expiration id="expiration" class="form-control" placeholder="Expiration"}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="tags" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-tags"></i> Tags
+    </label>
+    <div id="tags" class="col-sm-10">
+      {{#each model.tags as |tag|}}
+        <a class="list-group-item">
+          <i class="fa fa-folder"></i> {{tag}}
+        </a>
+      {{/each}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="notes" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-sticky-note"></i> Notes
+    </label>
+    <div class="col-sm-10">
+      {{#if model.notesJSON}}
+        {{textarea value=model.notesFromJSON id="notes" rows="5" class="form-control" placeholder="Notes"}}
+      {{else}}
+        {{textarea value=model.notes id="notes" rows="5" class="form-control" placeholder="Notes"}}
+      {{/if}}
+    </div>
+  </div>
+  {{!-- <div class="form-group">
+    <label class="col-sm-2 control-label">
+      {{img-favicon url=model.url}} Url
+    </label>
+    <div class="col-sm-10">
+      {{input type="text" value=model.url id="url" class="form-control" placeholder="Url"}}
+    </div>
+  </div> --}}
+  <div>
+    {{#unless showNewInputForm}}
+      <button {{action 'toggleShowNewInputForm'}} class="btn btn-block btn-default">
+        <i class="fa fa-fw fa-plus"></i> Add Input
+      </button>
+    {{else}}
+      <div class="panel panel-default dotted">
+        <div class="panel-body">
+          <div class="dropdown">
+            <button class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Type">
+              <span class="pull-left">
+                {{#if newInput}}
+                  <i class="fa fa-fw {{newInput.icon}}"></i> {{newInput.title}}
+                {{else}}
+                  Type
+                {{/if}}
+              </span>
+              <span class="pull-right">
+                <i class="fa fa-fw fa-caret-down"></i>
+              </span>
+            </button>
+            <ul class="dropdown-menu btn-block">
+              {{#each inputs as |input|}}
+                <li>
+                  <a {{action 'setNewInput' input}}>
+                    <i class="fa fa-fw {{input.icon}}"></i> {{input.title}}
+                  </a>
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+          <div class="row form-group">
+            <div class="col-xs-4">
+              <div class="dropdown">
+                <button class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Icon">
+                  <span class="pull-left">
+                    {{#if newInputIcon}}
+                      <i class="fa fa-fw {{newInputIcon}}"></i>
+                    {{else}}
+                      <i class="fa fa-fw fa-question"></i>
+                    {{/if}}
+                  </span>
+                  <span class="pull-right">
+                    <i class="fa fa-fw fa-caret-down"></i>
+                  </span>
+                </button>
+                <div class="dropdown-menu" style="padding-left: 5px; padding-right: 5px">
+                  {{#each icons as |icon|}}
+                    <a {{action 'setNewInputIcon' icon}} style="float: left; padding-left: 5px; padding-right: 5px">
+                      <i class="fa fa-fw {{icon}}"></i>
+                    </a>
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-8 no-padding-left">
+              {{input type="text" class="form-control" placeholder="Title" value=newInputTitle title="Title"}}
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-xs-12">
+              <button {{action 'addNewInput'}} class="btn btn-default pull-right">
+                <i class="fa fa-fw fa-check"></i> Confirm
+              </button>
+              <button {{action 'closeNewInput'}} class="btn btn-default">
+                <i class="fa fa-fw fa-ban"></i> Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/unless}}
+  </div>
+</form>
+<hr />
+<div class="form-horizontal">
+  <div class="form-group small">
+    <label for="creation" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-clock-o"></i> Created
+    </label>
+    <p class="col-sm-10 form-control-static" id="creation">
+      {{model.creation}}
+    </p>
+  </div>
+  <div class="form-group small">
+    <label for="modification" class="col-sm-2 control-label">
+      <i class="fa fa-fw fa-history"></i> Last Modification
+    </label>
+    <p class="col-sm-10 form-control-static" id="modification">
+      {{model.modification}}
+    </p>
+  </div>
+</div>
+{{#if model.hasDirtyAttributes}}
+  <hr />
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn btn-default pull-left" {{action 'doCancel'}}>
+        <i class="fa fa-fw fa-ban"></i> Cancel
+      </button>
+      <button class="btn btn-default pull-right" {{action 'doSave'}}>
+        <i class="fa fa-fw fa-check"></i> Save
+      </button>
+    </div>
+  </div>
+  <br>
+{{/if}}

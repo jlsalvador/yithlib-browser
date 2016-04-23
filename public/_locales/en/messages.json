@@ -1,0 +1,44 @@
+{
+  "error": {
+    "message": "Error: $details$",
+    "description": "Generic error template. Expects error parameter to be passed in.",
+    "placeholders": {
+      "details": {
+        "content": "$1",
+        "example": "Failed to fetch RSS feed."
+      }
+    }
+  },
+  "text_loading": {
+    "message": "Loading",
+    "description": "Text 'Loading'"
+  },
+  "menu_password": {
+    "message": "Passwords",
+    "description": "Main menu 'Password' entry"
+  },
+  "menu_websites": {
+    "message": "Websites",
+    "description": "Main menu 'Websites' entry"
+  },
+  "menu_notes": {
+    "message": "Notes",
+    "description": "Main menu 'Notes' entry"
+  },
+  "menu_fill_form": {
+    "message": "Fill Forms",
+    "description": "Main menu 'Fill Form' entry"
+  },
+  "menu_generate_password": {
+    "message": "Generate Password",
+    "description": "Main menu 'Generate Password' entry"
+  },
+  "menu_preferences": {
+    "message": "Preferences",
+    "description": "Main menu 'Preferences' entry"
+  },
+  "menu_log_out": {
+    "message": "Log out",
+    "description": "Main menu 'Log out' entry"
+  }
+}

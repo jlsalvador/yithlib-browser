@@ -1,0 +1,15 @@
+{
+  "name": "yithlib",
+  "dependencies": {
+    "ember": "~2.5.0",
+    "ember-cli-shims": "0.1.1",
+    "ember-cli-test-loader": "0.2.2",
+    "jquery": "1.11.3",
+    "moment": "~2.13.0",
+    "sjcl": "~1.0.3",
+    "font-awesome": "~4.6.1",
+    "bootstrap-sass": "~3.3.6",
+    "jquery.scrollTo": "^2.1.2",
+    "ember-qunit-notifications": "0.1.0"
+  }
+}

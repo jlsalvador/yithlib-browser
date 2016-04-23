@@ -1,0 +1,146 @@
+<div class="form-group" role="toolbar">
+  <div class="btn-group btn-group-justified" role="group">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-filter"></i> Filter <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-globe"></i> Websites
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-lock"></i> Passwords
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-sticky-note"></i> Notes
+          </a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <a {{action 'toggleShowTags'}}>
+            <span class="{{unless showTags 'text-muted'}}">
+              <i class="fa fa-fw fa-folder"></i> Tags
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-sort"></i> Sort <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-sort-alpha-asc"></i> Name
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-history"></i> Last used
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-clock-o"></i> Modified
+          </a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <a {{action 'toggleFirstlyTags'}}>
+            <i class="fa fa-fw fa-folder"></i>
+            {{#if showFirstlyTags}}
+              Firstly tags
+            {{else}}
+              Lastly tags
+            {{/if}}
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-list"></i> Views <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-th-list"></i> Normal
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-th-large"></i> Comfortable
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <i class="fa fa-fw fa-align-justify"></i> Compacted
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{{#if tag}}
+  <div class="row form-group">
+    <div class="col-xs-12">
+      <div class="list-group-item">
+        <i class="fa fa-fw fa-folder-open"></i> {{tag}}
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+<div class="row form-group">
+  <div class="col-xs-12">
+    {{#if showTags}}
+      {{#if showFirstlyTags}}
+        {{#each filteredTags as |tag|}}
+          <a href="" {{action "selectTag" tag}} class="list-group-item">
+            <i class="fa fa-folder"></i> {{tag}}
+          </a>
+        {{/each}}
+      {{/if}}
+    {{/if}}
+
+    {{#each pagedFilteredPasswords as |password|}}
+      {{#link-to 'authenticated.passwords.show' password class="list-group-item" title=password.url}}
+        {{#if password.url}}{{img-favicon enableFavIconFetcher=storage.enableFavIconFetcher url=password.url}}{{/if}}
+        {{password.service}}
+        {{#if password.account}}
+          <div class="small text-overflow">{{password.account}}</div>
+        {{/if}}
+        {{#if password.url}}
+          <div class="small text-overflow">{{password.url}}</div>
+        {{/if}}
+      {{/link-to}}
+    {{/each}}
+
+    {{#if showTags}}
+      {{#unless showFirstlyTags}}
+        {{#each filteredTags as |tag|}}
+          <a href="" {{action "selectTag" tag}} class="list-group-item">
+            <i class="fa fa-folder"></i> {{tag}}
+          </a>
+        {{/each}}
+      {{/unless}}
+    {{/if}}
+
+    {{#if isMoreToLoad}}
+      <a href="" {{action "loadMore"}} class="list-group-item">
+        <i class="fa fa-fw fa-arrow-down"></i> Show more
+      </a>
+    {{/if}}
+
+    {{#if isEmptyList}}
+      Can't find "<i>{{filter}}</i>" in your library.
+    {{/if}}
+  </div>
+</div>

@@ -1,0 +1,42 @@
+{
+  "author": "José Luis Salvador Rufo",
+  "background": {
+    "page": "assets/background.html"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "assets/favicon-16.png",
+      "128": "assets/favicon.png"
+    },
+    "default_popup": "index.html?browser_action",
+    "default_title": "YithLib"
+  },
+  "default_locale": "en",
+  "description": "A client for Yith Library.",
+  "icons": {
+    "16": "assets/favicon-16.png",
+    "128": "assets/favicon.png"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs2nPT6YQzpLbGTjc4QJgO2vYIfMEXXiO7xmWLekZjP63o5xS1af6F2PazynCURTiUJiFr5yI1idRiavDDwKLnGWhAr0rqNVyYQTX/BGPYQ4PQqRZQU8FHMfCKSMFLfnmVFsed2tnWu87k9UDfCY7l0p0iQo+sAQ65KR9FtlSJOyqOmVApxyPJJfJQ2lQ6gRfRTrJ34hr63n4IS/eywUXYyIkPSuw8irMq+GsBkyzaG9pl7bOqiFc9TaZPeln6bnyQ8XYtnh95vJumFtfS3F5OhdPeopGQuXtaAfvjPaSfRXsplh7o5WH0r6j43k5fr5wKXREozCOaTX3ioFTSF0YSQIDAQAB",
+  "manifest_version": 2,
+  "minimum_chrome_version": "49",
+  "name": "YithLib",
+  "omnibox": {
+    "keyword": "yl"
+  },
+  "options_ui": {
+    "page": "index.html?without-navbar#/preferences",
+    "chrome_style": true
+  },
+  "permissions": [
+    "https://www.yithlibrary.com/",
+    "contextMenus",
+    "notifications",
+    "storage",
+    "tabs"
+  ],
+  "short_name": "YithLib",
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "version": "0.1.57",
+  "version_name": "alpha 0.1.57"
+}

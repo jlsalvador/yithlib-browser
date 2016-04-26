@@ -35,14 +35,14 @@
             // Internal
             lastRoute: null
         }, {
-            set: function(target, property, value) {
+            set: function (target, property, value) {
                 if (self.yithlib.events.emit('storagePreSetProperty', arguments)) {
                     target[property] = value;
                     self.yithlib.events.emit('storagePostSetProperty', arguments);
                 }
                 return true;
             },
-            deleteProperty: function(target, property) {
+            deleteProperty: function (target, property) {
                 if (self.yithlib.events.emit('storagePreDeleteProperty', arguments)) {
                     delete target[property];
                     self.yithlib.events.emit('storagePostDeleteProperty', arguments);
@@ -52,6 +52,7 @@
         }),
         timerClearMasterPassword,
         readyPromise = new Promise(function (resolve) {
+
             // Fill storage from chrome.storage.local
             chrome.storage.local.get(Object.keys(storage), function (items) {
                 var property;
@@ -69,13 +70,52 @@
 
                 // Binding local storage to chrome.storage.local
                 self.yithlib.events.addListener('storagePostSetProperty', function (target, property, value) {
-                    var changes = {};
-                    changes[property] = value;
-                    chrome.storage.local.set(changes);
+
+                    // Add or delete masterPassword for each whereToRememberMasterPassword changes
+                    if (property === 'whereToRememberMasterPassword') {
+                        if (value === 'local') {
+                            chrome.storage.local.set({
+                                masterPassword: storage.masterPassword
+                            });
+                        } else if (value === 'session') {
+                            chrome.storage.local.remove('masterPassword');
+                        } else {
+                            storage.masterPassword = null;
+                        }
+                    }
+
+                    // Save any property, but ignore masterPassword when whereToRememberMasterPassword not equal to "local"
+                    if (property !== 'masterPassword' || storage.whereToRememberMasterPassword === 'local') {
+                        var changes = {};
+                        changes[property] = value;
+                        chrome.storage.local.set(changes);
+                    } else if (property === 'masterPassword') {
+                        chrome.storage.local.remove('masterPassword');
+                    }
+
                     return true;
                 });
                 self.yithlib.events.addListener('storagePostDeleteProperty', function (target, property) {
                     chrome.storage.local.remove(property);
+                    return true;
+                });
+
+                // Add listeners
+                self.yithlib.events.addListener('storagePreSetProperty', function (target, property, value) {
+
+                    // Clean masterPassword with a timeout if whereToRememberMasterPassword === memory
+                    if (property === 'masterPassword' || property === 'whereToRememberMasterPassword') {
+                        clearTimeout(timerClearMasterPassword);
+                        if (
+                            (property === 'whereToRememberMasterPassword' && value === 'memory' && storage.masterPassword !== null) ||
+                            (property === 'masterPassword' && value !== null)
+                        ) {
+                            timerClearMasterPassword = setTimeout(function () {
+                                storage.masterPassword = null;
+                            }, storage.millisecondsToDeleteMasterPasswordFromMemory);
+                        }
+                    }
+
                     return true;
                 });
 
@@ -88,6 +128,7 @@
                                     key: property,
                                     value: value
                                 });
+                                return true;
                             },
                             observerDelete = function (target, property) {
                                 port.postMessage({
@@ -95,6 +136,7 @@
                                     key: property,
                                     value: undefined
                                 });
+                                return true;
                             };
                         port.onDisconnect.addListener(function () {
                             self.yithlib.events.removeListener('storagePostSetProperty', observerSet);
@@ -129,38 +171,9 @@
                     storage.numberOfPagedPasswords = 20;
                     storage.version = '0.1.57';
                 }
-
-                // Add listeners
-                self.yithlib.events.addListener('storagePreSetProperty', function (target, property) {
-
-                    // Clean masterPassword with a timeout if whereToRememberMasterPassword === memory
-                    if (property === 'masterPassword' || property === 'whereToRememberMasterPassword') {
-                        clearTimeout(timerClearMasterPassword);
-                        if (target.whereToRememberMasterPassword === 'memory' && target.masterPassword !== null) {
-                            timerClearMasterPassword = setTimeout(function () {
-                                target.masterPassword = null;
-                            }, target.millisecondsToDeleteMasterPasswordFromMemory);
-                        }
-                    }
-
-                    // Only save masterPassword if whereToRememberMasterPassword === local
-                    if (property === 'masterPassword') {
-                        return target.whereToRememberMasterPassword === 'local';
-                    }
-
-                    // Add or delete masterPassword from chrome storage for each whereToRememberMasterPassword changes
-                    if (property === 'whereToRememberMasterPassword') {
-                        if (target.whereToRememberMasterPassword === 'local') {
-                            chrome.storage.local.set({
-                                masterPassword: target.masterPassword
-                            });
-                        } else {
-                            chrome.storage.local.remove('masterPassword');
-                        }
-                    }
-
-                    return true;
-                });
+                if (storage.version === '0.1.57') {
+                    storage.version = '0.1.58';
+                }
 
                 resolve();
             });

@@ -111,16 +111,30 @@
     {{/if}}
 
     {{#each pagedFilteredPasswords as |password|}}
-      {{#link-to 'authenticated.passwords.show' password class="list-group-item" title=password.url}}
-        {{#if password.url}}{{img-favicon enableFavIconFetcher=storage.enableFavIconFetcher url=password.url}}{{/if}}
-        {{password.service}}
-        {{#if password.account}}
-          <div class="small text-overflow">{{password.account}}</div>
-        {{/if}}
-        {{#if password.url}}
-          <div class="small text-overflow">{{password.url}}</div>
-        {{/if}}
-      {{/link-to}}
+      <div class="list-group-item clearfix">
+        <div class="pull-right btn-group">
+          {{#if password.account}}
+            <button {{action 'copyToClipboard' password.account}} title="Copy the username to the clipboard" class="btn btn-xs btn-default">
+              <i class="fa fa-fw fa-user"></i>
+            </button>
+          {{/if}}
+          {{#if password.decryptedSecret}}
+            <button {{action 'copyToClipboard' password.decryptedSecret}} title="Copy the password to the clipboard" class="btn btn-xs btn-default">
+              <i class="fa fa-fw fa-key"></i>
+            </button>
+          {{/if}}
+        </div>
+        {{#link-to 'authenticated.passwords.show' password title=password.url}}
+          {{#if password.url}}{{img-favicon enableFavIconFetcher=storage.enableFavIconFetcher url=password.url}}{{/if}}
+          {{password.service}}
+          {{#if password.account}}
+            <div class="small text-overflow">{{password.account}}</div>
+          {{/if}}
+          {{#if password.url}}
+            <div class="small text-overflow">{{password.url}}</div>
+          {{/if}}
+        {{/link-to}}
+      </div>
     {{/each}}
 
     {{#if showTags}}

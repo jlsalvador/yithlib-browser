@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import RouteHistoryMixin from 'ember-route-history/mixins/routes/route-history';
+import CopyToClipboardMixin from '../../../mixins/copy-to-clipboard';
 
-export default Ember.Route.extend(RouteHistoryMixin, {
+export default Ember.Route.extend(RouteHistoryMixin, CopyToClipboardMixin, {
     storage: Ember.inject.service(),
     queryParams: {
         tag: {}

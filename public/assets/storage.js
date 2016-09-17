@@ -48,7 +48,7 @@
                     self.yithlib.events.emit('storagePostDeleteProperty', arguments);
                 }
                 return true;
-            },
+            }
         }),
         timerClearMasterPassword,
         readyPromise = new Promise(function (resolve) {
@@ -108,7 +108,7 @@
                         clearTimeout(timerClearMasterPassword);
                         if (
                             (property === 'whereToRememberMasterPassword' && value === 'memory' && storage.masterPassword !== null) ||
-                            (property === 'masterPassword' && value !== null)
+                            (property === 'masterPassword' && value !== null && storage.whereToRememberMasterPassword === 'memory')
                         ) {
                             timerClearMasterPassword = setTimeout(function () {
                                 storage.masterPassword = null;
@@ -173,6 +173,9 @@
                 }
                 if (storage.version === '0.1.57') {
                     storage.version = '0.1.58';
+                }
+                if (storage.version === '0.1.58') {
+                    storage.version = '0.1.59';
                 }
 
                 resolve();

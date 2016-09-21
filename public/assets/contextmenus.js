@@ -20,72 +20,76 @@
                     'active': true,
                     'currentWindow': true
                 }, function (tabs) {
-                    if (tabs.length > 0) {
-                        var tab = tabs[0],
-                            domain;
-                        if (tab.highlighted && tab.status === 'complete') {
-                            domain = extractDomain(tab.url);
-                            //console.log('refreshContextMenus', domain, tab.title);
-
-                            chrome.contextMenus.removeAll(function () {
-                                if (yithlib.storage.allowContextMenus) {
-                                    chrome.contextMenus.create({
-                                        'contexts': [
-                                            'link',
-                                            'image',
-                                            'video',
-                                            'audio',
-                                            'editable',
-                                            'page',
-                                            'selection'
-                                        ],
-                                        'id': 'yithlib-parentMenu',
-                                        'title': 'YithLib'
-                                    }, function () {
-                                        return chrome.runtime.lastError;
-                                    });
-                                    chrome.contextMenus.create({
-                                        'contexts': ['editable'],
-                                        'id': 'yithlib-secret-' + domain,
-                                        'parentId': 'yithlib-parentMenu',
-                                        'title': 'Secret associated with ' + domain,
-                                        'onclick': function (info, tab) {
-                                            console.log(info, tab);
-                                        }
-                                    }, function () {
-                                        return chrome.runtime.lastError;
-                                    });
-                                    chrome.contextMenus.create({
-                                        'contexts': ['editable'],
-                                        'id': 'yithlib-parentMenuSeparador',
-                                        'parentId': 'yithlib-parentMenu',
-                                        'type': 'separator'
-                                    }, function () {
-                                        return chrome.runtime.lastError;
-                                    });
-                                    chrome.contextMenus.create({
-                                        'contexts': [
-                                            'link',
-                                            'image',
-                                            'video',
-                                            'audio',
-                                            'editable',
-                                            'page',
-                                            'selection'
-                                        ],
-                                        'id': 'yithlib-addUrlMenu',
-                                        'parentId': 'yithlib-parentMenu',
-                                        'title': 'Add ' + domain + ' to your library',
-                                        'onclick': function (info, tab) {
-                                            console.log(info, tab);
-                                        }
-                                    }, function () {
-                                        return chrome.runtime.lastError;
-                                    });
-                                }
-                            });
-                        }
+                    if (tabs.length <= 0) {
+                        return;
                     }
+                    var tab = tabs[0],
+                        domain;
+                    if (!tab.highlighted || tab.status !== 'complete') {
+                        return;
+                    }
+                    domain = extractDomain(tab.url);
+                    //console.log('refreshContextMenus', domain, tab.title);
+
+                    chrome.contextMenus.removeAll(function () {
+                        if (chrome.runtime.lastError) {
+                            return chrome.runtime.lastError;
+                        }
+                        if (!yithlib.storage.allowContextMenus) {
+                            return;
+                        }
+
+                        [{
+                            'contexts': [
+                                'link',
+                                'image',
+                                'video',
+                                'audio',
+                                'editable',
+                                'page',
+                                'selection'
+                            ],
+                            'id': 'yithlib-parentMenu',
+                            'title': 'YithLib'
+                        }, {
+                            'contexts': ['editable'],
+                            'id': 'yithlib-secret-' + domain,
+                            'parentId': 'yithlib-parentMenu',
+                            'title': 'Secret associated with ' + domain,
+                            'onclick': function (info, tab) {
+                                console.log(info, tab);
+                            }
+                        }, {
+                            'contexts': ['editable'],
+                            'id': 'yithlib-parentMenuSeparador',
+                            'parentId': 'yithlib-parentMenu',
+                            'type': 'separator'
+                        }, {
+                            'contexts': [
+                                'link',
+                                'image',
+                                'video',
+                                'audio',
+                                'editable',
+                                'page',
+                                'selection'
+                            ],
+                            'id': 'yithlib-addUrlMenu',
+                            'parentId': 'yithlib-parentMenu',
+                            'title': 'Add ' + domain + ' to your library',
+                            'onclick': function (info, tab) {
+                                console.log(info, tab);
+                            }
+                        }].forEach(function (contextMenu) {
+                            try {
+                                chrome.contextMenus.create(contextMenu, function () {
+                                    return chrome.runtime.lastError;
+                                });
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        });
+                    });
                 });
             };
 

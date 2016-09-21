@@ -23,24 +23,27 @@
             }
         });
 
-        // Notify to login on first installation
-        chrome.runtime.onInstalled.addListener(function (details) {
-            if (details.reason === 'install') {
-                chrome.notifications.create('notificationFirstInstallation', {
-                    type: 'basic',
-                    iconUrl: '/assets/favicon.png',
-                    title: 'Please, log in your Yith Library',
-                    message: 'You can change this server in the YithLib Preferences.',
-                    // contextMessage: 'Thank you for use YithLib!',
-                    isClickable: false,
-                    buttons: [{
-                        title: 'Log in ' + yithlib.storage.serverUrl
-                    }, {
-                        title: 'YithLib Preferences'
-                    }]
-                });
-            }
-        });
+        if (chrome.runtime.hasOwnProperty('onInstalled')) {
+            // Notify to login on first installation
+            chrome.runtime.onInstalled.addListener(function (details) {
+                if (details.reason === 'install') {
+                    chrome.notifications.create('notificationFirstInstallation', {
+                        type: 'basic',
+                        iconUrl: '/assets/favicon.png',
+                        title: 'Please, log in your Yith Library',
+                        message: 'You can change this server in the YithLib Preferences.',
+                        // contextMessage: 'Thank you for use YithLib!',
+                        isClickable: false,
+                        buttons: [{
+                            title: 'Log in ' + yithlib.storage.serverUrl
+                        }, {
+                            title: 'YithLib Preferences'
+                        }]
+                    });
+                }
+            });
+        }
+
     });
 
 }(this.yithlib));

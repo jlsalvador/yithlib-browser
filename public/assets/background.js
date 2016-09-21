@@ -24,10 +24,12 @@
             logoutTabId = null,
             logoutListeners = [];
 
-        chrome.runtime.onUpdateAvailable.addListener(function(details) {
-            console.log('Updating to version: ' + details.version);
-            chrome.runtime.reload();
-        });
+        if (chrome.runtime.hasOwnProperty('onUpdateAvailable')) {
+            chrome.runtime.onUpdateAvailable.addListener(function(details) {
+                console.log('Updating to version: ' + details.version);
+                chrome.runtime.reload();
+            });
+        }
 
         chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             var

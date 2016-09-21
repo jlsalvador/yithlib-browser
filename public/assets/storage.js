@@ -149,7 +149,7 @@
                             if (message.action === 'getStorage') {
                                 port.postMessage({
                                     action: 'setStorage',
-                                    storage: storage
+                                    storage: JSON.parse(JSON.stringify(storage))
                                 });
                             } else if (message.action === 'updateKey') {
                                 storage[message.key] = message.value;
